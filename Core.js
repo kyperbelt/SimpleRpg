@@ -1,4 +1,56 @@
+/*
+<svg class="background">
+  
+  <!--  -->
+  <svg id="startscreen">
+    <use id="startbutton" href="#push-button" y="50" height="60"
+      fill="fb-red" font-family="System-Regular" font-size="40">
+      <set href="#text" attributeName="text-buffer" to="Start" />
+      <set href="#text" attributeName="fill" to="fb-peach" />
+      <set href="#text" attributeName="y" to="12" />
+    </use>
+   </svg>
+  
+  
+  <!--  -->
+  <svg id="messagescreen" display="none">
+    <text id="message" x="50%" y="50%+15">this is messagescreen</text>
+   <use id="continuebutton" href="#push-button" y="50" height="60"
+      fill="fb-red" font-family="System-Regular" font-size="40">
+      <set href="#text" attributeName="text-buffer" to="Continue" />
+      <set href="#text" attributeName="fill" to="fb-peach" />
+      <set href="#text" attributeName="y" to="12" />
+    </use>
+   </svg>
+  
+  
+  <!--  -->
+    <svg id="walkscreen" display="none">
+    <text id="message" x="50%" y="50%+15">this is the walkscreen</text>
+   
+   </svg>
+  
+  
+  <!--  -->
+    <svg id="encounterscreen" display="none">
+    <text id="message" x="50%" y="50%+15">thisisencounterscreen</text>
+   
+   </svg>
+  
+  <!--  -->
+    <svg id="statscreen" display="none">
+   
+   </svg>
+  
+  
+  <!--  -->
+    <svg id="fightscreen" display="none">
+    <text id="message" x="50%" y="50%+15">thisisfightscreen</text>
+   
+   </svg>
+</svg>
 
+*/
 /*
  * Entry point for the watch app
  */
