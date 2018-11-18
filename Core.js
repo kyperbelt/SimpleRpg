@@ -147,7 +147,11 @@ const calculateAttack = function(attackerStats,defenderStats, useDefense){
     if(useDefense){
         defense - defenderStats.getDefense();
     }
-    var damageDone = attackerStats.getAttack() - defense;
+    var a = attackerStats.getAttack();
+    var d = defenderStats.getDefense();
+    var n = 10;
+
+    var damageDone = parseInt((a * a / d) / n + 2);
     defenderStats.changeHealth(-damageDone);
 }
 
