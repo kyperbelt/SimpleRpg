@@ -1,4 +1,105 @@
 
+/*
+ * Entry point for the watch app
+ */
+import document from "document";
+
+import {today} from "user-activity";
+
+var steps = today.local.steps || 0;
+
+let startscreen = document.getElementById("startscreen");
+let messagescreen = document.getElementById("messagescreen");
+let walkscreen = document.getElementById("walkscreen");
+let encounterscreen = document.getElementById("encounterscreen");
+let statscreen = document.getElementById("statscreen");
+let fightscreen = document.getElementById("fightscreen");
+
+
+
+
+let startbutton = document.getElementById("startbutton");
+startbutton.onclick = function() {
+  setScreen("messagescreen");
+  
+}
+
+let continuebutton = document.getElementById("continuebutton");
+continuebutton.onclick = function() {
+  setScreen("walkscreen");
+  
+}
+
+const checkSteps=function(num){
+  var cs = today.local.steps || 0;
+  console.log("checking steps : amount="+num+" current="+cs+" diff="+(cs - steps));
+  if(cs - steps >=num){
+    setScreen("encounterscreen");
+  }else{
+    setTimeout(checkSteps, 100)
+  }
+}
+
+const setScreen = function(screen){
+  console.log("switching to screen:"+screen);
+  
+  if(screen === "startscreen"){
+    startscreen.style.display = "inline";
+    
+  startscreen.style.display = "none";
+  messagescreen.style.display = "none";
+  walkscreen.style.display = "none";
+  encounterscreen.style.display = "none";
+  statscreen.style.display = "none";
+  fightscreen.style.display = "none";
+  }
+  if(screen === "messagescreen"){
+    messagescreen.style.display = "inline";
+    startscreen.style.display = "none";
+  walkscreen.style.display = "none";
+  encounterscreen.style.display = "none";
+  statscreen.style.display = "none";
+  fightscreen.style.display = "none";
+  }
+  if(screen === "walkscreen"){
+    walkscreen.style.display = "inline";
+    startscreen.style.display = "none";
+  messagescreen.style.display = "none";
+  encounterscreen.style.display = "none";
+  statscreen.style.display = "none";
+  fightscreen.style.display = "none";
+    checkSteps(parseInt(10 + Math.random() * 10));
+  }
+  if(screen === "encounterscreen"){
+    encounterscreen.style.display = "inline";
+    startscreen.style.display = "none";
+  messagescreen.style.display = "none";
+  walkscreen.style.display = "none";
+  statscreen.style.display = "none";
+  fightscreen.style.display = "none";
+  }
+  if(screen === "statscreen"){
+    statscreen.style.display = "inline";
+    startscreen.style.display = "none";
+  messagescreen.style.display = "none";
+  walkscreen.style.display = "none";
+  encounterscreen.style.display = "none";
+  fightscreen.style.display = "none";
+  }
+  if(screen === "fightscreen"){
+    fightscreen.style.display = "inline";
+    startscreen.style.display = "none";
+  messagescreen.style.display = "none";
+  walkscreen.style.display = "none";
+  encounterscreen.style.display = "none";
+  statscreen.style.display = "none";
+  }
+}
+
+
+
+
+//-----------------------------
 
 class Stats{
     constructor(){
