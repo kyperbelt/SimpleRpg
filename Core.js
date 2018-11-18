@@ -57,8 +57,16 @@
 import document from "document";
 
 import {today} from "user-activity";
+import { HeartRateSensor } from "heart-rate";
+
+let hrm = new HeartRateSensor();
+hrm.onreading = function() {
+  console.log("Current heart rate: " + hrm.heartRate);
+}
+hrm.start();
 
 var steps = today.local.steps || 0;
+var num = 0;
 
 let startscreen = document.getElementById("startscreen");
 let messagescreen = document.getElementById("messagescreen");
@@ -67,11 +75,12 @@ let encounterscreen = document.getElementById("encounterscreen");
 let statscreen = document.getElementById("statscreen");
 let fightscreen = document.getElementById("fightscreen");
 
-
+let messagetext = document.getElementById("message");
 
 
 let startbutton = document.getElementById("startbutton");
 startbutton.onclick = function() {
+  generateFightIndex();
   setScreen("messagescreen");
   
 }
@@ -82,7 +91,7 @@ continuebutton.onclick = function() {
   
 }
 
-const checkSteps=function(num){
+const checkSteps=function(){
   var cs = today.local.steps || 0;
   console.log("checking steps : amount="+num+" current="+cs+" diff="+(cs - steps));
   if(cs - steps >=num){
@@ -112,6 +121,7 @@ const setScreen = function(screen){
   encounterscreen.style.display = "none";
   statscreen.style.display = "none";
   fightscreen.style.display = "none";
+    messagetext.text = messages[fightIndex];
   }
   if(screen === "walkscreen"){
     walkscreen.style.display = "inline";
@@ -120,7 +130,12 @@ const setScreen = function(screen){
   encounterscreen.style.display = "none";
   statscreen.style.display = "none";
   fightscreen.style.display = "none";
-    checkSteps(parseInt(10 + Math.random() * 10));
+    if(!debug){
+    num = parseInt(10 + Math.random() * 10);
+    }else{
+      num = 0;
+    }
+    checkSteps();
   }
   if(screen === "encounterscreen"){
     encounterscreen.style.display = "inline";
@@ -148,7 +163,36 @@ const setScreen = function(screen){
   }
 }
 
+//-----------new---
+document.onkeypress = function(evt) {
+  if (evt.key === "back") {
+    if (statscreen.style.display === "inline"){
+      setScreen("encounterscreen");
+    }
+  }
+}
 
+let statbutton = document.getElementById("statbutton");
+statbutton.onclick = function() {
+  setScreen("statscreen");
+  
+}
+
+let fightbutton = document.getElemenById("fightbutton");
+fightbutton.onclick = function(){
+  setScreen("fightscreen");
+}
+
+const debug = true;
+
+var enemies = ["Dark Image", "Saedim", "Ruined Wanderer"];
+var messages = ["You hear a rasping sound in the distance...","A man with gold clothes bearing black teeth.","Filthy bearded Creature"];
+
+var fightIndex = 0;
+
+const generateFightIndex=function(){
+  fightIndex = randomIn(0,enemies.length+1);
+}
 
 
 //-----------------------------
