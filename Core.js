@@ -16,7 +16,7 @@ class Stats{
     }
 
     setMaxHealth(health){
-        this.maxHealth = maxHealth;
+        this.maxHealth = health;
     }
 
     getMaxHealth(){
@@ -50,11 +50,22 @@ class Stats{
     getDefense(){
         return this.defense;
     }
+
+    isDead(){
+        return this.getCurrentHeath() <= 0;
+    }
 }
 
 class Enemy{
-    name = "no name";
-    stats = new Stats();
+
+    constructor(){
+        this.name = "no name";
+        this.stats = new Stats();
+    }
+
+    setName(name){
+        this.name = name;
+    }
 
     getStats(){
         return this.stats;
@@ -63,12 +74,18 @@ class Enemy{
     getName(){
         return this.name;
     }
+
+    toString(){
+        return "Enemy["+this.name+"] Stats{mh:"+this.stats.getMaxHealth()+",ch:"+this.stats.getCurrentHeath()+",a:"+this.stats.getAttack()+",d:"+this.stats.getDefense()+"}";
+    }
 }
 
 class Player{
-    name = "noname";
-    stats = new Stats();
-    gold = 0;
+    constructor(){
+        this.name = "noname";
+        this.stats = new Stats();
+        this.gold = 0;
+    }
 
     getGold(){
         return this.gold;
@@ -90,24 +107,39 @@ class Player{
     setName(name){
         this.name = name;
     }
+
+    toString(){
+        return "Player["+this.name+"] Gold="+this.gold+" Stats{mh:"+this.stats.getMaxHealth()+",ch:"+this.stats.getCurrentHeath()+",a:"+this.stats.getAttack()+",d:"+this.stats.getDefense()+"}";
+    }
 }
 
 class Core{
-    players = 0;
 
+    constructor(){
+        this.players = 0;
+    }
+
+    createEnemy(name,attack,defense,health){
+        var e = new Enemy();
+        e.setName(name);
+        e.getStats().set(health,attack,defense);
+        return e;
+    }
 
     createPlayer(name,attack,defense,health,gold){
-        if(player >= 1)
+        if(this.player >= 1)
         return;
-        p = new Player();
+        var p = new Player();
         p.setGold(gold);
-        p.getStats().getStats().set(health,attack,defense);
+        p.getStats().set(health,attack,defense);
         p.setName(name);
-        player++;
+        this.player++;
         return p;
     }
 
 }
+
+//combat
 
 const calculateAttack = function(attackerStats,defenderStats, useDefense){
     var defense = 0;
@@ -116,8 +148,10 @@ const calculateAttack = function(attackerStats,defenderStats, useDefense){
         defense - defenderStats.getDefense();
     }
     var damageDone = attackerStats.getAttack() - defense;
-    defenderStats.changeHealth(attackerStats.getAttack() - defense);
+    defenderStats.changeHealth(-damageDone);
 }
+
+//utils
 
 const Clamp = function(value,min,max){
     return Math.max(min,Math.min(value,max));
@@ -127,18 +161,59 @@ const checkStats = function(stats){
     console.log("currentHealth="+stats.currentHealth + " maxHealth="+stats.maxHealth+" attack="+stats.attack+" defense"+stats.defense);
 }
 
+const print = function(message){
+    console.log(message);
+}
+
+const randomInt = function(min,max){
+    return parseInt(min+Math.random()*(max-min));
+}
+
+//tests
 
 const runTests = function(){
+    core = new Core();
+    player = core.createPlayer("player",randomInt(20,30),randomInt(10,30),randomInt(40,60),0);
 
+    var enemynames = ["blockchain","smartcar","testname","testenemy","randomlychosen"];
+    print(player.toString());
 
+    print("creating enemies:");
+    var i;
+    var enemies = [];
+    for(i = 0;i < 100;i++){
+        var ename = enemynames[parseInt(Math.random()*5)];
+        var e = core.createEnemy(ename,randomInt(1,20),randomInt(3,16),randomInt(8,25));
+        enemies.push(e);
+        print(e.toString());
+    }
 
+    print(player.toString());
+    print("commencing gaunlet!");
 
+    var count = 0;
+
+    for(i = 0; i < enemies.length;i++){
+        var enemy = enemies[i];
+        while(!player.getStats().isDead() && !enemy.getStats().isDead()){
+            print("Attacking enemy:"+enemy.name+"]");
+            calculateAttack(player.stats,enemy.stats,false);
+            calculateAttack(enemy.stats,player.stats,false);
+
+            print(player.toString());
+            print(enemy.toString());
+        }
+
+        if(player.getStats().isDead()){
+            print("player died at count:"+count);
+            break;
+        }
+        count++;
+    }
 
 }
 
-
-stats = new Stats();
-checkStats(stats);
+runTests();
 
 
 
