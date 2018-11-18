@@ -176,8 +176,8 @@ const randomInt = function(min,max){
 //tests
 
 const runTests = function(){
-    core = new Core();
-    player = core.createPlayer("player",randomInt(20,30),randomInt(10,30),randomInt(40,60),0);
+    var core = new Core();
+    var player = core.createPlayer("player",randomInt(20,30),randomInt(10,30),randomInt(40,60),0);
 
     var enemynames = ["blockchain","smartcar","testname","testenemy","randomlychosen"];
     print(player.toString());
@@ -220,4 +220,8 @@ const runTests = function(){
 runTests();
 
 
+var core = new Core();
+var p = core.createPlayer("name",11,11,11,11);
 
+let demotext = document.getElementById("demotext");
+demotext.text = ""+p.toString();
